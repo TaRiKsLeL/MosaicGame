@@ -1,6 +1,7 @@
 var cols = 4;
 var rows = 5;
 
+var tableFragment;
 var field = document.getElementById('field');
 
 var mosaicData= {
@@ -75,29 +76,58 @@ function initMosaicOnScreen(){
 		mosaicData.mosaicOnScreen[i]=[];
 		for(let j=0;j<mosaicData.mosaicHided[0].length;j++){
 			mosaicData.mosaicOnScreen[i][j]=0;
-			//let cellTD = document.createElement()
-			//mosaicData.mosaicOnScreen[i][j]= 
 		}
 	}
 }
 
 function createTable(){
 
-	let tableFragment = document.createDocumentFragment();
+	tableFragment = document.createDocumentFragment();
 	let tableTopRow = document.createElement('tr');
-	for(let i=0;i<=mosaicData.rowsData.length;i++){
-		let tableData = document.createElement('td');
-		let rangesInRow = mosaicData.rowsData[i].reduce((res,elem)=>(res+=elem+" "),"");
-		tableData.classList.add('table-num');
-		tableData.innerHTML = rangesInRow;
-		tableTopRow.appendChild(tableData);
+	tableTopRow.appendChild(document.createElement('td'));
+	for(let i=0;i<=mosaicData.colsData.length;i++){
+		if(typeof mosaicData.colsData[i] !== "undefined"){
+			let tableData = document.createElement('td');
+			console.log(mosaicData.colsData[i]);
+			let rangesInCol = mosaicData.colsData[i];//.reduce(function(res,elem){return res += elem+" ";},"");
+			tableData.classList.add('table-num');
+			tableData.innerHTML = rangesInCol;
+			tableTopRow.appendChild(tableData);
+		}
 	}
 
 	tableFragment.appendChild(tableTopRow);
 
+	for(let i=0;i<mosaicData.mosaicOnScreen.length;i++){
 
+		let tableRow = document.createElement('tr');
+		let tableData = document.createElement('td');
+		let rangesInRow = mosaicData.rowsData[i].reduce(function(res,elem){return res += elem+" ";},"");
+		tableData.classList.add('table-num');
+		tableData.innerHTML = rangesInRow;
+		tableRow.appendChild(tableData);
+
+		for(let j=0;j<mosaicData.mosaicOnScreen[0].length;j++){
+			let tableData = document.createElement('td');
+			tableData.classList.add('table-mosaic-cell');
+			tableData.addEventListener("click",clicked);
+			mosaicData.mosaicOnScreen[i][j] = tableData;
+			
+			tableRow.appendChild(tableData);
+		}
+		tableFragment.appendChild(tableRow);
+	}
+
+	field.appendChild(tableFragment);
+}
+
+function clicked(){
+	let rInd=this.parentNode.rowIndex-1;
+	let cInd=this.cellIndex-1;
+
+	mosaicData.mosaicOnScreen[rInd][cInd].classList.toggle('painted');
 }
 
 generateMosaic(5,5);
 initMosaicOnScreen()
-console.log(mosaicData.colsData);
+createTable();
