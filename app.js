@@ -1,14 +1,18 @@
 var cols = 4;
 var rows = 5;
 
-var tableFragment;
-var field = document.getElementById('field');
+var hp = 3;
+var score =0;
+var gameOver = false;
+
+var tableFragment; 
 
 var mosaicData= {
 	rowsData:[],		// Дані про довжину послідовностей в рядку
 	colsData:[],		// Дані про довжину послідовностей в колонці
 	mosaicHided: [],	// Мета
-	mosaicOnScreen: []	// Те, що на екрані
+	mosaicOnScreen: [],	// Те, що на екрані
+	amountToFind:0		// Кількість одиничок, яка залишилась
 }
 
 
@@ -20,6 +24,12 @@ function generateMosaic(cols, rows){
 		[0,0,0,1,1],
 		[1,0,1,0,0]
 	];
+
+	mosaicData.amountToFind = mosaicData.mosaicHided.reduce(function(count, arr){
+		return count+=(arr.filter(element=>element===1)).length;
+	},0);
+
+	console.log(mosaicData.amountToFind);
 
 	let arr = mosaicData.mosaicHided;
 
@@ -88,7 +98,6 @@ function createTable(){
 	for(let i=0;i<=mosaicData.colsData.length;i++){
 		if(typeof mosaicData.colsData[i] !== "undefined"){
 			let tableData = document.createElement('td');
-			console.log(mosaicData.colsData[i]);
 			let rangesInCol = mosaicData.colsData[i];//.reduce(function(res,elem){return res += elem+" ";},"");
 			tableData.classList.add('table-num');
 			tableData.innerHTML = rangesInCol;
@@ -118,15 +127,34 @@ function createTable(){
 		tableFragment.appendChild(tableRow);
 	}
 
-	field.appendChild(tableFragment);
+	$("#field").append(tableFragment);
 }
 
 function clicked(){
 	let rInd=this.parentNode.rowIndex-1;
 	let cInd=this.cellIndex-1;
 
-	mosaicData.mosaicOnScreen[rInd][cInd].classList.toggle('painted');
+	if(mosaicData.mosaicHided[rInd][cInd]==1){
+		mosaicData.mosaicOnScreen[rInd][cInd].classList.toggle('painted');
+		mosaicData.amountToFind--;
+
+		if(mosaicData.amountToFind===0){
+			$(".score").html(++score);
+		}
+
+	}else{
+		mosaicData.mosaicOnScreen[rInd][cInd].classList.toggle('mis-painted');
+		$(".hp").html(--hp);
+
+		if(hp===0){
+			gameOver=true;
+		}
+	}
+	mosaicData.mosaicOnScreen[rInd][cInd].classList.add("animate__animated");
+	mosaicData.mosaicOnScreen[rInd][cInd].classList.add("animate__fadeIn");
+
 }
+
 
 generateMosaic(5,5);
 initMosaicOnScreen()

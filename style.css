@@ -6,8 +6,8 @@
 .table-mosaic-cell, .table-num {
   width: 30px;
   height: 30px;
-  background-color: blue;
-position: relative;
+  background-color: white;
+  position: relative;
   cursor: pointer;
   border: 1px solid yellow;
 }
@@ -43,5 +43,9 @@ position: relative;
 }
  
 .painted {
-  background-color: white;
+  background-color: blue;
+}
+
+.mis-painted{
+  background-color: red;
 }
