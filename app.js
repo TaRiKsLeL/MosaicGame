@@ -10,28 +10,21 @@ var tableFragment;
 var mosaicData= {
 	rowsData:[],		// Дані про довжину послідовностей в рядку
 	colsData:[],		// Дані про довжину послідовностей в колонці
-	mosaicHided: [],	// Мета
+	mosaicHidden: [],	// Мета
 	mosaicOnScreen: [],	// Те, що на екрані
 	amountToFind:0		// Кількість одиничок, яка залишилась
 }
 
 
-function generateMosaic(cols, rows){
-	mosaicData.mosaicHided = [
-		[1,1,1,0,1],
-		[1,0,1,1,1],
-		[1,1,0,1,1],
-		[0,0,0,1,1],
-		[1,0,1,0,0]
-	];
+function generateMosaic(){
 
-	mosaicData.amountToFind = mosaicData.mosaicHided.reduce(function(count, arr){
+
+	mosaicData.amountToFind = mosaicData.mosaicHidden.reduce(function(count, arr){
 		return count+=(arr.filter(element=>element===1)).length;
 	},0);
 
-	console.log(mosaicData.amountToFind);
 
-	let arr = mosaicData.mosaicHided;
+	let arr = mosaicData.mosaicHidden;
 
 	// Збираємо інформацію по довжину послідовностей в рядках і заносимо в масив
 	let inRowCounter=0;
@@ -82,9 +75,9 @@ function generateMosaic(cols, rows){
 
 function initMosaicOnScreen(){
 
-	for(let i=0;i<mosaicData.mosaicHided.length;i++){
+	for(let i=0;i<mosaicData.mosaicHidden.length;i++){
 		mosaicData.mosaicOnScreen[i]=[];
-		for(let j=0;j<mosaicData.mosaicHided[0].length;j++){
+		for(let j=0;j<mosaicData.mosaicHidden[0].length;j++){
 			mosaicData.mosaicOnScreen[i][j]=0;
 		}
 	}
@@ -134,7 +127,7 @@ function clicked(){
 	let rInd=this.parentNode.rowIndex-1;
 	let cInd=this.cellIndex-1;
 
-	if(mosaicData.mosaicHided[rInd][cInd]==1){
+	if(mosaicData.mosaicHidden[rInd][cInd]==1){
 		mosaicData.mosaicOnScreen[rInd][cInd].classList.toggle('painted');
 		mosaicData.amountToFind--;
 
@@ -155,7 +148,21 @@ function clicked(){
 
 }
 
+// fetch('mosaics.json')
+// 	.then(res=> await res.json())
+// 	.then(mosaics=>{
+// 		mosaicData.mosaicHidden = mosaics[Math.floor(Math.random()*mosaics.length)];
+// 	});
 
-generateMosaic(5,5);
-initMosaicOnScreen()
-createTable();
+	const request = async () => {
+		const response = await fetch('mosaics.json');
+		const mosaics = await response.json();
+		mosaicData.mosaicHidden = mosaics[Math.floor(Math.random()*mosaics.length)];
+		generateMosaic();
+		initMosaicOnScreen();
+		createTable();
+	}
+	
+	request();
+
+
