@@ -69,8 +69,6 @@ function generateMosaic(){
 			}
 		}
 	}
-
-
 }
 
 function initMosaicOnScreen(){
@@ -93,6 +91,7 @@ function createTable(){
 			let tableData = document.createElement('td');
 			let rangesInCol = mosaicData.colsData[i];//.reduce(function(res,elem){return res += elem+" ";},"");
 			tableData.classList.add('table-num');
+			tableData.classList.add('border-radius-top');
 			tableData.innerHTML = rangesInCol;
 			tableTopRow.appendChild(tableData);
 		}
@@ -106,6 +105,7 @@ function createTable(){
 		let tableData = document.createElement('td');
 		let rangesInRow = mosaicData.rowsData[i].reduce(function(res,elem){return res += elem+" ";},"");
 		tableData.classList.add('table-num');
+		tableData.classList.add('border-radius-left');
 		tableData.innerHTML = rangesInRow;
 		tableRow.appendChild(tableData);
 
@@ -115,11 +115,17 @@ function createTable(){
 			tableData.addEventListener("click",clicked);
 			mosaicData.mosaicOnScreen[i][j] = tableData;
 			
+			if(i+1===mosaicData.mosaicOnScreen.length && j+1===mosaicData.mosaicOnScreen[0].length){
+				tableData.classList.add('border-right-bottom-corner');
+			}
+
 			tableRow.appendChild(tableData);
 		}
 		tableFragment.appendChild(tableRow);
 	}
-
+	
+	$("#field").addClass("animate__animated");
+	$("#field").addClass("animate__fadeInDown");
 	$("#field").append(tableFragment);
 }
 
@@ -132,29 +138,32 @@ function clicked(){
 		mosaicData.amountToFind--;
 
 		if(mosaicData.amountToFind===0){
-			$(".score").html(++score);
+			hp=3;
+			$(".hp").html(`Шансів ${hp}`);
+			$(".score").html(`Рівень ${++score}`);
+			request();
 		}
 
 	}else{
 		mosaicData.mosaicOnScreen[rInd][cInd].classList.toggle('mis-painted');
-		$(".hp").html(--hp);
+		--hp;
 
 		if(hp===0){
 			gameOver=true;
+			request();
+			hp=3;
+			score=0;
+			$(".score").html(`Рівень ${score}`);
 		}
+		$(".hp").html(`Шансів ${hp}`);
 	}
 	mosaicData.mosaicOnScreen[rInd][cInd].classList.add("animate__animated");
 	mosaicData.mosaicOnScreen[rInd][cInd].classList.add("animate__fadeIn");
 
 }
 
-// fetch('mosaics.json')
-// 	.then(res=> await res.json())
-// 	.then(mosaics=>{
-// 		mosaicData.mosaicHidden = mosaics[Math.floor(Math.random()*mosaics.length)];
-// 	});
-
 	const request = async () => {
+		$('#field').empty();
 		const response = await fetch('mosaics.json');
 		const mosaics = await response.json();
 		mosaicData.mosaicHidden = mosaics[Math.floor(Math.random()*mosaics.length)];
@@ -164,5 +173,9 @@ function clicked(){
 	}
 	
 	request();
+	$('input[type="range"]').on('input',function changeCellsSize(){
+		$('.table-mosaic-cell, .table-num').css('width',$(this).val());
+		$('.table-mosaic-cell, .table-num').css('height',$(this).val());
+	});
 
 

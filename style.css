@@ -1,7 +1,19 @@
-#field {
+@import url(https://fonts.googleapis.com/css?family=Dosis:700);
+
+body{
+  font-family: "Dosis", Helvetica, Arial, sans-serif; 
+  background-color: #F7F9FA;
+  color: #34495e;
+}
+
+#field, .hp, .score {
   margin: 0 auto;
 }
 
+#field{
+    border-spacing: 3px;
+    border-collapse: separate;
+}
 
 .table-mosaic-cell, .table-num {
   width: 30px;
@@ -9,11 +21,24 @@
   background-color: white;
   position: relative;
   cursor: pointer;
-  border: 1px solid yellow;
+  box-shadow: 2px 4px 1px 0px rgba(176,176,176,0.4);
 }
 
 .table-num{
-  background-color: cadetblue; 
+  text-align: center;
+  background-color: #D9EAEF; 
+ }
+
+ .border-radius-top{
+  border-radius: 15px 15px 0px 0px;
+}
+
+ .border-radius-left{
+   border-radius: 15px 0px 0px 15px;
+ }
+
+ .border-right-bottom-corner{
+  border-radius: 0px 0px 15px 0px;
  }
 
 .table-mosaic-cell.painted:hover:after{
@@ -35,17 +60,54 @@
   left: 100%;
  top: -1em;
   z-index: 2;
-  background: #fff;
-  border: 1px solid red;
-  color: green;
+  background: #6C95AA;
+  /* border: 1px solid red; */
+  border-radius: 10px;
+  color: #fff;
   width: max-content;
   padding: 3px;
 }
  
 .painted {
-  background-color: blue;
+  background-color: #6C95AA;
 }
 
 .mis-painted{
-  background-color: red;
+  background-color: #FFA030;
 }
+
+/* ====== RANGE ====== */
+
+input[type="range"] {
+  display: block;
+  -webkit-appearance: none;
+  position: absolute;
+  bottom: 100px;
+  left: 0;
+  right: 0;
+  background-color: #989FA4;
+  width: 200px;
+  height: 5px;
+  border-radius: 5px;
+  margin: 0 auto;
+  outline: 0;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  background-color: #FFA030;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid white;
+  cursor: pointer;
+  transition: .3s ease-in-out;
+}​
+  input[type="range"]::-webkit-slider-thumb:hover {
+    background-color: white;
+    border: 2px solid #FFA030;
+  }
+  input[type="range"]::-webkit-slider-thumb:active {
+    transform: scale(1.6);
+  }
+
+  /* ====== RANGE ====== */
