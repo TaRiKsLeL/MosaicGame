@@ -52,7 +52,7 @@ body{
   border-radius: 0px 0px 30px 0px;
  }
 
-.table-mosaic-cell.painted:hover:after{
+/* .table-mosaic-cell.painted:hover:after{
   content:'Видалити панель';
   position: absolute;
   left: 100%;
@@ -63,7 +63,7 @@ body{
   color: red;
   width: max-content;
   padding: 3px;
-}
+} */
 
 .table-mosaic-cell:hover:after{
   content:'Вставити';

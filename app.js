@@ -25,7 +25,6 @@ function generateMosaic(){
 		return count+=(arr.filter(element=>element===1)).length;
 	},0);
 
-
 	let arr = mosaicData.mosaicHidden;
 
 	// Збираємо інформацію по довжину послідовностей в рядках і заносимо в масив
@@ -135,8 +134,17 @@ function clicked(){
 	let rInd=this.parentNode.rowIndex-1;
 	let cInd=this.cellIndex-1;
 
+	//Якщо елемент вже був нажатий, включити анімацію і вийти з функції
+	if(mosaicData.mosaicOnScreen[rInd][cInd].classList.contains('painted') ||
+	mosaicData.mosaicOnScreen[rInd][cInd].classList.contains('mis-painted')){
+		mosaicData.mosaicOnScreen[rInd][cInd].classList.remove("animate__fadeIn");
+		mosaicData.mosaicOnScreen[rInd][cInd].classList.toggle("animate__headShake");
+		console.log(mosaicData.mosaicOnScreen[rInd][cInd].classList);
+		return;
+	}
+	 
 	if(mosaicData.mosaicHidden[rInd][cInd]==1){
-		mosaicData.mosaicOnScreen[rInd][cInd].classList.toggle('painted');
+		mosaicData.mosaicOnScreen[rInd][cInd].classList.add('painted');
 		mosaicData.amountToFind--;
 
 		if(mosaicData.amountToFind===0){
@@ -147,7 +155,7 @@ function clicked(){
 		}
 
 	}else{
-		mosaicData.mosaicOnScreen[rInd][cInd].classList.toggle('mis-painted');
+		mosaicData.mosaicOnScreen[rInd][cInd].classList.add('mis-painted');
 		--hp;
 
 		if(hp===0){
