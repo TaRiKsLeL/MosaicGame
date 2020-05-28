@@ -1,11 +1,6 @@
-var cols = 4;
-var rows = 5;
-
 var hp = 3;
 var score =0;
 var gameOver = false;
-
-var tableFragment; 
 
 var mosaicData= {
 	rowsData:[],		// Дані про довжину послідовностей в рядку
@@ -25,7 +20,7 @@ function reinitMosaicData(){
 
 function generateMosaic(){
 
-
+	//Рахую кількість елементів, які потрібно знайти 
 	mosaicData.amountToFind = mosaicData.mosaicHidden.reduce(function(count, arr){
 		return count+=(arr.filter(element=>element===1)).length;
 	},0);
@@ -90,7 +85,7 @@ function initMosaicOnScreen(){
 
 function createTable(){
 
-	tableFragment = document.createDocumentFragment();
+	let tableFragment = document.createDocumentFragment();
 	let tableTopRow = document.createElement('tr');
 	tableTopRow.appendChild(document.createElement('td'));
 	for(let i=0;i<=mosaicData.colsData.length;i++){
@@ -146,8 +141,8 @@ function clicked(){
 
 		if(mosaicData.amountToFind===0){
 			hp=3;
-			$(".hp").html(`Шансів ${hp}`);
-			$(".score").html(`Рівень ${++score}`);
+			$(".hp").html(`Шансів: ${hp}`);
+			$(".score").html(`Розгадано мозаїк: ${++score}`);
 			request();
 		}
 
@@ -160,7 +155,7 @@ function clicked(){
 			request();
 			hp=3;
 			score=0;
-			$(".score").html(`Рівень ${score}`);
+			$(".score").html(`Розгадано мозаїк: ${score}`);
 		}
 		$(".hp").html(`Шансів ${hp}`);
 	}
