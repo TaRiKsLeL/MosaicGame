@@ -40,6 +40,7 @@ body{
   background-color: #D9EAEF; 
  }
 
+
  .border-radius-top{
   border-radius: 30px 30px 0px 0px;
 }
@@ -52,8 +53,8 @@ body{
   border-radius: 0px 0px 30px 0px;
  }
 
-/* .table-mosaic-cell.painted:hover:after{
-  content:'Видалити панель';
+.table-mosaic-cell.mis-painted:hover:after{
+  content:'Неправильно';
   position: absolute;
   left: 100%;
   top: -1em;
@@ -63,21 +64,21 @@ body{
   color: red;
   width: max-content;
   padding: 3px;
-} */
+}
 
-.table-mosaic-cell:hover:after{
+/* .table-mosaic-cell:hover:after{
   content:'Вставити';
   position: absolute;
   left: 100%;
  top: -1em;
   z-index: 2;
   background: #6C95AA;
-  /* border: 1px solid red; */
+  border: 1px solid red; 
   border-radius: 10px;
   color: #fff;
   width: max-content;
   padding: 3px;
-}
+} */
  
 .painted {
   background-color: #6C95AA;
