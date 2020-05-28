@@ -15,6 +15,13 @@ var mosaicData= {
 	amountToFind:0		// Кількість одиничок, яка залишилась
 }
 
+function reinitMosaicData(){
+	mosaicData.rowsData=[];
+	mosaicData.colsData=[];
+	mosaicData.mosaicHidden = [];
+	mosaicData.mosaicOnScreen = [];
+	mosaicData.amountToFind = 0;
+}
 
 function generateMosaic(){
 
@@ -163,10 +170,13 @@ function clicked(){
 }
 
 	const request = async () => {
+		reinitMosaicData();
 		$('#field').empty();
+
 		const response = await fetch('mosaics.json');
 		const mosaics = await response.json();
 		mosaicData.mosaicHidden = mosaics[Math.floor(Math.random()*mosaics.length)];
+
 		generateMosaic();
 		initMosaicOnScreen();
 		createTable();
