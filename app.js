@@ -1,6 +1,9 @@
 var hp = 3;
 var score =0;
-var gameOver = false;
+
+let mosaicIndex=0;
+let playedAlready=[];
+let mosaicsDataBase = [];
 
 var mosaicData= {
 	rowsData:[],		// Дані про довжину послідовностей в рядку
@@ -10,15 +13,13 @@ var mosaicData= {
 	amountToFind:0		// Кількість одиничок, яка залишилась
 }
 
-function reinitMosaicData(){
-	mosaicData.rowsData=[];
-	mosaicData.colsData=[];
-	mosaicData.mosaicHidden = [];
-	mosaicData.mosaicOnScreen = [];
-	mosaicData.amountToFind = 0;
-}
+function fillMosaicData(){
 
-function generateMosaic(){
+	do{
+		mosaicIndex = Math.floor(Math.random()*mosaicsDataBase.length);
+	}while(playedAlready.includes(mosaicIndex));
+
+	mosaicData.mosaicHidden = mosaicsDataBase[mosaicIndex];
 
 	//Рахую кількість елементів, які потрібно знайти 
 	mosaicData.amountToFind = mosaicData.mosaicHidden.reduce(function(count, arr){
@@ -149,9 +150,17 @@ function clicked(){
 
 		if(mosaicData.amountToFind===0){
 			hp=3;
-			$(".hp").html(`Шансів: ${hp}`);
-			$(".score").html(`Розгадано мозаїк: ${++score}`);
-			request();
+			score++;
+
+			playedAlready.push(mosaicIndex);
+			if(mosaicsDataBase.length===score){
+				alert("WIN! Який молодець ;)");
+
+				return;
+			}
+			$(".hp").html(`♥ ${hp}`);
+			$(".score").html(`Розгадано мозаїк: ${score}/${mosaicsDataBase.length}`);
+			nextMap();
 		}
 
 	}else{
@@ -159,36 +168,53 @@ function clicked(){
 		--hp;
 
 		if(hp===0){
-			gameOver=true;
-			request();
+			nextMap();
+			alert("ОЙ. Прийдеться cпочатку");
 			hp=3;
 			score=0;
-			$(".score").html(`Розгадано мозаїк: ${score}`);
+			$(".score").html(`Розгадано мозаїк: ${score}/${mosaicsDataBase.length}`);
 		}
-		$(".hp").html(`Шансів ${hp}`);
+		$(".hp").html(`♥ ${hp}`);
 	}
 	mosaicData.mosaicOnScreen[rInd][cInd].classList.add("animate__animated");
 	mosaicData.mosaicOnScreen[rInd][cInd].classList.add("animate__fadeIn");
 
 }
 
-	const request = async () => {
-		reinitMosaicData();
-		$('#field').empty();
+$('input[type="range"]').on('input',function changeCellsSize(){
+	$('.table-mosaic-cell, .table-num').css('width',$(this).val());
+	$('.table-mosaic-cell, .table-num').css('height',$(this).val());
+});
 
-		const response = await fetch('mosaics.json');
-		const mosaics = await response.json();
-		mosaicData.mosaicHidden = mosaics[Math.floor(Math.random()*mosaics.length)];
+function nextMap(){
+	mosaicData.rowsData=[];
+	mosaicData.colsData=[];
+	mosaicData.mosaicHidden = [];
+	mosaicData.mosaicOnScreen = [];
+	mosaicData.amountToFind = 0;
 
-		generateMosaic();
-		initMosaicOnScreen();
-		createTable();
-	}
+	$('#field').empty();
+	fillMosaicData();
+	initMosaicOnScreen();
+	createTable();
+}
+
+function restartGame(){
+	hp=0;
+	score=0;
+	playedAlready=[];
+	nextMap();
+}
+
+const initialTODO = async (jsonFile) => {		
+	const response = await fetch(jsonFile);
+	mosaicsDataBase = await response.json();
+	fillMosaicData();
+	initMosaicOnScreen();
+	createTable();
+}
 	
-	request();
-	$('input[type="range"]').on('input',function changeCellsSize(){
-		$('.table-mosaic-cell, .table-num').css('width',$(this).val());
-		$('.table-mosaic-cell, .table-num').css('height',$(this).val());
-	});
+initialTODO('mosaics.json');
+	
 
 
