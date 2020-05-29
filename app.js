@@ -127,7 +127,7 @@ function createTable(){
 		}
 		tableFragment.appendChild(tableRow);
 	}
-	console.log(cellSize);
+
 	$("#field").addClass("animate__animated");
 	$("#field").addClass("animate__fadeInDown");
 	$("#field").append(tableFragment);
@@ -165,7 +165,7 @@ function clicked(){
 			}
 			$(".hp").html(`♥ ${hp}`);
 			$(".score").html(`Розгадано мозаїк: ${score}/${mosaicsDataBase.length}`);
-			nextMap();
+			generateNew();
 		}
 
 	}else{
@@ -173,7 +173,7 @@ function clicked(){
 		--hp;
 
 		if(hp===0){
-			nextMap();
+			generateNew();
 			alert("ОЙ. Прийдеться cпочатку");
 			hp=3;
 			score=0;
@@ -192,7 +192,7 @@ $('input[type="range"]').on('input',function changeCellsSize(){
 	$('.table-mosaic-cell, .table-num').css('height',cellSize);
 });
 
-function nextMap(){
+function generateNew(){
 	mosaicData.rowsData=[];
 	mosaicData.colsData=[];
 	mosaicData.mosaicHidden = [];
@@ -209,7 +209,7 @@ function restartGame(){
 	hp=0;
 	score=0;
 	playedAlready=[];
-	nextMap();
+	generateNew();
 }
 
 const initialTODO = async (jsonFile) => {		
