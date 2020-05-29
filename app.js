@@ -1,6 +1,8 @@
 var hp = 3;
 var score =0;
 
+let cellSize=30;
+
 let mosaicIndex=0;
 let playedAlready=[];
 let mosaicsDataBase = [];
@@ -125,10 +127,13 @@ function createTable(){
 		}
 		tableFragment.appendChild(tableRow);
 	}
-	
+	console.log(cellSize);
 	$("#field").addClass("animate__animated");
 	$("#field").addClass("animate__fadeInDown");
 	$("#field").append(tableFragment);
+	$('.table-mosaic-cell, .table-num').css('width',cellSize);
+	$('.table-mosaic-cell, .table-num').css('height',cellSize);
+	
 }
 
 function clicked(){
@@ -182,8 +187,9 @@ function clicked(){
 }
 
 $('input[type="range"]').on('input',function changeCellsSize(){
-	$('.table-mosaic-cell, .table-num').css('width',$(this).val());
-	$('.table-mosaic-cell, .table-num').css('height',$(this).val());
+	cellSize = $(this).val();
+	$('.table-mosaic-cell, .table-num').css('width',cellSize);
+	$('.table-mosaic-cell, .table-num').css('height',cellSize);
 });
 
 function nextMap(){
